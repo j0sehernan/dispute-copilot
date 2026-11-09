@@ -1,0 +1,118 @@
+# One command:   OPENAI_API_KEY=sk-... docker compose up --build
+# Local model:   LLM_PROVIDER=ollama docker compose --profile ollama up --build
+name: dispute-copilot
+
+x-app: &app
+  build: .
+  image: dispute-copilot:local
+  restart: unless-stopped
+  environment: &env
+    DATABASE_URL: postgres://copilot:copilot@postgres:5432/copilot?sslmode=disable
+    MOCK_PSP_URL: http://mockpsp:8081
+    OLLAMA_URL: http://ollama:11434
+    WEBHOOK_SECRET: ${WEBHOOK_SECRET:-local-dev-secret}
+    OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    LLM_PROVIDER: ${LLM_PROVIDER:-}
+    LLM_MODEL: ${LLM_MODEL:-}
+    LLM_BASE_URL: ${LLM_BASE_URL:-}
+    LLM_JSON_MODE: ${LLM_JSON_MODE:-json_schema}
+    EMBED_PROVIDER: ${EMBED_PROVIDER:-}
+    EMBED_MODEL: ${EMBED_MODEL:-}
+    LOG_LEVEL: ${LOG_LEVEL:-info}
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: copilot
+      POSTGRES_PASSWORD: copilot
+      POSTGRES_DB: copilot
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U copilot -d copilot"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  mockpsp:
+    <<: *app
+    command: ["/app/mockpsp"]
+    environment:
+      MOCK_LATENCY: 200ms
+
+  api:
+    <<: *app
+    command: ["/app/api"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/app/api", "healthcheck"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  worker:
+    <<: *app
+    command: ["/app/worker"]
+    depends_on:
+      api:
+        condition: service_healthy
+      mockpsp:
+        condition: service_started
+      ollama-pull:
+        condition: service_completed_successfully
+        required: false
+
+  # Loads the 15 synthetic disputes once the API is up. Safe to rerun.
+  seed:
+    <<: *app
+    command: ["/app/seed"]
+    restart: "no"
+    environment:
+      <<: *env
+      API_URL: http://api:8080
+      PUBLIC_URL: http://localhost:8080
+    depends_on:
+      api:
+        condition: service_healthy
+
+  eval:
+    <<: *app
+    command: ["/app/eval"]
+    restart: "no"
+    profiles: ["eval"]
+    environment:
+      <<: *env
+      API_URL: http://api:8080
+    depends_on:
+      api:
+        condition: service_healthy
+
+  ollama:
+    image: ollama/ollama:0.12.6
+    restart: unless-stopped
+    profiles: ["ollama"]
+    volumes:
+      - ollama:/root/.ollama
+
+  ollama-pull:
+    image: ollama/ollama:0.12.6
+    profiles: ["ollama"]
+    restart: "no"
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["ollama pull nomic-embed-text && ollama pull ${LLM_MODEL:-qwen2.5:7b}"]
+    depends_on:
+      - ollama
+
+volumes:
+  pgdata:
+  ollama:
