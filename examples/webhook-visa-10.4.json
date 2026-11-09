@@ -1,0 +1,14 @@
+{
+  "case_id": "VDR-26-0004817",
+  "network": "visa",
+  "reason_code": "10.4",
+  "amount": {
+    "value": "249.00",
+    "currency": "USD"
+  },
+  "transaction_id": "txn_8F2K1Q",
+  "transaction_date": "2026-08-14",
+  "opened_at": "2026-09-20",
+  "respond_by": "2026-10-20",
+  "cardholder_claim": "Cardholder states they did not authorize or participate in this transaction."
+}

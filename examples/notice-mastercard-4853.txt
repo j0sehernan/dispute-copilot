@@ -1,0 +1,16 @@
+Chargeback notification
+Harbor Point Merchant Services
+
+Merchant: Cerro Verde Outfitters, MID 4410022931
+Date of notice: September 30, 2026
+
+Case: MC-CB-2026-120440
+Network: Mastercard
+Reason code: 4853 Cardholder Dispute - Not as Described
+Amount disputed: 218.00 USD
+Transaction: txn_C6V1Y3 dated August 28, 2026
+
+Cardholder says: Tent poles arrived broken. I sent it back as instructed and I am still waiting for my money.
+
+Reply before October 30, 2026.
+
