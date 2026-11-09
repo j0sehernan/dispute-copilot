@@ -1,0 +1,139 @@
+{
+  "id": "01-fraud-3ds-authenticated",
+  "description": "Visa card-absent fraud claim on a 3-D Secure authenticated purchase.",
+  "input": {
+    "kind": "json",
+    "payload": {
+      "case_id": "VDR-26-0004817",
+      "network": "visa",
+      "reason_code": "10.4",
+      "amount": {
+        "value": "249.00",
+        "currency": "USD"
+      },
+      "transaction_id": "txn_8F2K1Q",
+      "transaction_date": "2026-08-14",
+      "opened_at": "2026-09-20",
+      "respond_by": "2026-10-20",
+      "cardholder_claim": "Cardholder states they did not authorize or participate in this transaction."
+    }
+  },
+  "expected": {
+    "category": "fraud",
+    "recommendation": "fight",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_8F2K1Q",
+      "order_id": "ord_10421",
+      "customer_id": "cus_3021",
+      "amount": "249.00",
+      "currency": "USD",
+      "created_at": "2026-08-14T15:22:09Z",
+      "card": {
+        "brand": "visa",
+        "last4": "4417",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "8F2K1Q"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "05"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "203.0.113.24",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10421",
+      "transaction_id": "txn_8F2K1Q",
+      "customer_id": "cus_3021",
+      "created_at": "2026-08-14T15:21:40Z",
+      "customer": {
+        "name": "Dana Whitfield",
+        "email": "dana.w@example.com"
+      },
+      "items": [
+        {
+          "sku": "TNT-2P-GRN",
+          "description": "Two-person backpacking tent, green",
+          "qty": 1,
+          "unit_price": "249.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "1450 Larimer St Apt 3B",
+        "city": "Denver",
+        "region": "CO",
+        "postal_code": "80202",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "1450 Larimer St Apt 3B",
+        "city": "Denver",
+        "region": "CO",
+        "postal_code": "80202",
+        "country": "US"
+      },
+      "ip": "203.0.113.24",
+      "device_id": "dev_7c1e09",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-08-14T15:21:40Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10421",
+      "carrier": "UPS",
+      "tracking_number": "1Z84X0E70394471182",
+      "status": "delivered",
+      "shipped_at": "2026-08-15T18:02:00Z",
+      "delivered_at": "2026-08-18T16:40:00Z",
+      "delivery_address": {
+        "line1": "1450 Larimer St Apt 3B",
+        "city": "Denver",
+        "region": "CO",
+        "postal_code": "80202",
+        "country": "US"
+      },
+      "proof": {
+        "type": "signature",
+        "signed_by": "D WHITFIELD"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_3021",
+      "first_seen": "2026-08-14",
+      "orders": [
+        {
+          "order_id": "ord_10421",
+          "transaction_id": "txn_8F2K1Q",
+          "date": "2026-08-14",
+          "amount": "249.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "203.0.113.24",
+          "device_id": "dev_7c1e09",
+          "disputed": false
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": []
+    }
+  }
+}

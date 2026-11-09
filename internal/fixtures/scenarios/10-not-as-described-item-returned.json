@@ -1,0 +1,140 @@
+{
+  "id": "10-not-as-described-item-returned",
+  "description": "Mastercard cardholder-dispute claim; the item came back to the warehouse but no refund was issued.",
+  "input": {
+    "kind": "text",
+    "text": "Chargeback notification\nHarbor Point Merchant Services\n\nMerchant: Cerro Verde Outfitters, MID 4410022931\nDate of notice: September 30, 2026\n\nCase: MC-CB-2026-120440\nNetwork: Mastercard\nReason code: 4853 Cardholder Dispute - Not as Described\nAmount disputed: 218.00 USD\nTransaction: txn_C6V1Y3 dated August 28, 2026\n\nCardholder says: Tent poles arrived broken. I sent it back as instructed and I am still waiting for my money.\n\nReply before October 30, 2026.\n"
+  },
+  "expected": {
+    "category": "not_as_described",
+    "recommendation": "accept",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_C6V1Y3",
+      "order_id": "ord_10471",
+      "customer_id": "cus_3350",
+      "amount": "218.00",
+      "currency": "USD",
+      "created_at": "2026-08-28T10:30:44Z",
+      "card": {
+        "brand": "mastercard",
+        "last4": "4408",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "C6V1Y3"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "02"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "198.51.100.33",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10471",
+      "transaction_id": "txn_C6V1Y3",
+      "customer_id": "cus_3350",
+      "created_at": "2026-08-28T10:29:59Z",
+      "customer": {
+        "name": "Ava Lindqvist",
+        "email": "ava.l@example.com"
+      },
+      "items": [
+        {
+          "sku": "TNT-3P-ORG",
+          "description": "Three-person dome tent, orange",
+          "qty": 1,
+          "unit_price": "218.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "315 S Boston Ave",
+        "city": "Tulsa",
+        "region": "OK",
+        "postal_code": "74103",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "315 S Boston Ave",
+        "city": "Tulsa",
+        "region": "OK",
+        "postal_code": "74103",
+        "country": "US"
+      },
+      "ip": "198.51.100.33",
+      "device_id": "dev_2f6d81",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-08-28T10:29:59Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10471",
+      "carrier": "UPS",
+      "tracking_number": "1Z84X0E70394508870",
+      "status": "delivered",
+      "shipped_at": "2026-08-29T14:00:00Z",
+      "delivered_at": "2026-09-01T15:22:00Z",
+      "delivery_address": {
+        "line1": "315 S Boston Ave",
+        "city": "Tulsa",
+        "region": "OK",
+        "postal_code": "74103",
+        "country": "US"
+      },
+      "proof": {
+        "type": "signature",
+        "signed_by": "A LINDQVIST"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_3350",
+      "first_seen": "2026-08-28",
+      "orders": [
+        {
+          "order_id": "ord_10471",
+          "transaction_id": "txn_C6V1Y3",
+          "date": "2026-08-28",
+          "amount": "218.00",
+          "currency": "USD",
+          "status": "returned",
+          "ip": "198.51.100.33",
+          "device_id": "dev_2f6d81",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [
+        {
+          "order_id": "ord_10471",
+          "rma": "RMA-55102",
+          "requested_at": "2026-09-02",
+          "received_at": "2026-09-09",
+          "condition": "damaged poles confirmed"
+        }
+      ],
+      "support_contacts": [
+        {
+          "date": "2026-09-02",
+          "channel": "chat",
+          "summary": "Customer reported broken poles. Agent issued RMA-55102."
+        }
+      ]
+    }
+  }
+}

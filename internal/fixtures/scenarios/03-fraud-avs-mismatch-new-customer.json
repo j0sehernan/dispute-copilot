@@ -1,0 +1,136 @@
+{
+  "id": "03-fraud-avs-mismatch-new-customer",
+  "description": "Visa fraud claim, no 3-D Secure, AVS mismatch and a first-time customer shipping to a different address.",
+  "input": {
+    "kind": "json",
+    "payload": {
+      "case_id": "VDR-26-0005120",
+      "network": "visa",
+      "reason_code": "10.4",
+      "amount": {
+        "value": "689.00",
+        "currency": "USD"
+      },
+      "transaction_id": "txn_R2T8C4",
+      "transaction_date": "2026-09-08",
+      "opened_at": "2026-09-29",
+      "respond_by": "2026-10-29",
+      "cardholder_claim": "Cardholder reports the card was used without permission. Card has been reissued."
+    }
+  },
+  "expected": {
+    "category": "fraud",
+    "recommendation": "accept",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_R2T8C4",
+      "order_id": "ord_10633",
+      "customer_id": "cus_5530",
+      "amount": "689.00",
+      "currency": "USD",
+      "created_at": "2026-09-08T04:47:13Z",
+      "card": {
+        "brand": "visa",
+        "last4": "0932",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "R2T8C4"
+      },
+      "three_ds": {
+        "status": "not_attempted"
+      },
+      "avs_result": "N",
+      "cvv_result": "M",
+      "ip": "192.0.2.199",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10633",
+      "transaction_id": "txn_R2T8C4",
+      "customer_id": "cus_5530",
+      "created_at": "2026-09-08T04:46:02Z",
+      "customer": {
+        "name": "Elena Marsh",
+        "email": "elena.marsh.77@example.com"
+      },
+      "items": [
+        {
+          "sku": "GPS-HND-X2",
+          "description": "Handheld GPS unit X2",
+          "qty": 1,
+          "unit_price": "689.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "2311 SE Division St",
+        "city": "Portland",
+        "region": "OR",
+        "postal_code": "97202",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "1201 Kietzke Ln Ste 4",
+        "city": "Reno",
+        "region": "NV",
+        "postal_code": "89502",
+        "country": "US"
+      },
+      "ip": "192.0.2.199",
+      "device_id": "dev_0b93ee",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-09-08T04:46:02Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10633",
+      "carrier": "USPS",
+      "tracking_number": "9400111899223817465512",
+      "status": "delivered",
+      "shipped_at": "2026-09-08T19:00:00Z",
+      "delivered_at": "2026-09-11T17:20:00Z",
+      "delivery_address": {
+        "line1": "1201 Kietzke Ln Ste 4",
+        "city": "Reno",
+        "region": "NV",
+        "postal_code": "89502",
+        "country": "US"
+      },
+      "proof": {
+        "type": "none"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_5530",
+      "first_seen": "2026-09-08",
+      "orders": [
+        {
+          "order_id": "ord_10633",
+          "transaction_id": "txn_R2T8C4",
+          "date": "2026-09-08",
+          "amount": "689.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "192.0.2.199",
+          "device_id": "dev_0b93ee",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": []
+    }
+  }
+}

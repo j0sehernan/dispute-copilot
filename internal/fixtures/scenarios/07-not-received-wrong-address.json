@@ -1,0 +1,156 @@
+{
+  "id": "07-not-received-wrong-address",
+  "description": "Visa not-received claim; the carrier delivered the parcel to an address that is not the order address.",
+  "input": {
+    "kind": "json",
+    "payload": {
+      "case_id": "VDR-26-0005288",
+      "network": "visa",
+      "reason_code": "13.1",
+      "amount": {
+        "value": "412.00",
+        "currency": "USD"
+      },
+      "transaction_id": "txn_Z1X4A7",
+      "transaction_date": "2026-09-10",
+      "opened_at": "2026-10-01",
+      "respond_by": "2026-10-31",
+      "cardholder_claim": "Tracking says delivered but not to my address. I never received the boots."
+    }
+  },
+  "expected": {
+    "category": "not_received",
+    "recommendation": "accept",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_Z1X4A7",
+      "order_id": "ord_10655",
+      "customer_id": "cus_3907",
+      "amount": "412.00",
+      "currency": "USD",
+      "created_at": "2026-09-10T09:14:31Z",
+      "card": {
+        "brand": "visa",
+        "last4": "6604",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "Z1X4A7"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "05"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "198.51.100.140",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10655",
+      "transaction_id": "txn_Z1X4A7",
+      "customer_id": "cus_3907",
+      "created_at": "2026-09-10T09:13:50Z",
+      "customer": {
+        "name": "Grace Holloway",
+        "email": "g.holloway@example.com"
+      },
+      "items": [
+        {
+          "sku": "BOOT-ALP-W8",
+          "description": "Alpine boots, women's 8",
+          "qty": 1,
+          "unit_price": "389.00"
+        },
+        {
+          "sku": "SHP-EXP",
+          "description": "Express shipping",
+          "qty": 1,
+          "unit_price": "23.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "520 Glenwood Ave",
+        "city": "Raleigh",
+        "region": "NC",
+        "postal_code": "27603",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "520 Glenwood Ave",
+        "city": "Raleigh",
+        "region": "NC",
+        "postal_code": "27603",
+        "country": "US"
+      },
+      "ip": "198.51.100.140",
+      "device_id": "dev_c2b1f9",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-09-10T09:13:50Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10655",
+      "carrier": "FedEx",
+      "tracking_number": "772019395511",
+      "status": "delivered",
+      "shipped_at": "2026-09-10T22:00:00Z",
+      "delivered_at": "2026-09-12T13:05:00Z",
+      "delivery_address": {
+        "line1": "530 Glenwood Ave",
+        "city": "Raleigh",
+        "region": "NC",
+        "postal_code": "27603",
+        "country": "US"
+      },
+      "proof": {
+        "type": "photo",
+        "photo_ref": "pod_772019395511.jpg"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_3907",
+      "first_seen": "2025-06-21",
+      "orders": [
+        {
+          "order_id": "ord_07730",
+          "transaction_id": "txn_E5S2Q1",
+          "date": "2025-06-21",
+          "amount": "120.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "198.51.100.140",
+          "device_id": "dev_c2b1f9",
+          "disputed": false
+        },
+        {
+          "order_id": "ord_10655",
+          "transaction_id": "txn_Z1X4A7",
+          "date": "2026-09-10",
+          "amount": "412.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "198.51.100.140",
+          "device_id": "dev_c2b1f9",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": []
+    }
+  }
+}

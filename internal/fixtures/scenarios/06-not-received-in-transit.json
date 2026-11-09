@@ -1,0 +1,150 @@
+{
+  "id": "06-not-received-in-transit",
+  "description": "Mastercard goods-not-provided claim; the parcel is still in transit with the carrier.",
+  "input": {
+    "kind": "json",
+    "payload": {
+      "case_id": "MC-CB-2026-119862",
+      "network": "mastercard",
+      "reason_code": "4855",
+      "amount": {
+        "value": "96.80",
+        "currency": "USD"
+      },
+      "transaction_id": "txn_W3E6U9",
+      "transaction_date": "2026-09-01",
+      "opened_at": "2026-10-05",
+      "respond_by": "2026-11-04",
+      "cardholder_claim": "Order never arrived. Over a month and tracking has not updated."
+    }
+  },
+  "expected": {
+    "category": "not_received",
+    "recommendation": "accept",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_W3E6U9",
+      "order_id": "ord_10520",
+      "customer_id": "cus_4471",
+      "amount": "96.80",
+      "currency": "USD",
+      "created_at": "2026-09-01T12:40:00Z",
+      "card": {
+        "brand": "mastercard",
+        "last4": "2290",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "W3E6U9"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "02"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "203.0.113.61",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10520",
+      "transaction_id": "txn_W3E6U9",
+      "customer_id": "cus_4471",
+      "created_at": "2026-09-01T12:39:15Z",
+      "customer": {
+        "name": "Tomás Ibarra",
+        "email": "tibarra@example.com"
+      },
+      "items": [
+        {
+          "sku": "BTL-INS-1L",
+          "description": "Insulated bottle 1L, x2",
+          "qty": 2,
+          "unit_price": "38.00"
+        },
+        {
+          "sku": "SHP-STD",
+          "description": "Standard shipping",
+          "qty": 1,
+          "unit_price": "20.80"
+        }
+      ],
+      "billing_address": {
+        "line1": "19 N Pinckney St",
+        "city": "Madison",
+        "region": "WI",
+        "postal_code": "53703",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "19 N Pinckney St",
+        "city": "Madison",
+        "region": "WI",
+        "postal_code": "53703",
+        "country": "US"
+      },
+      "ip": "203.0.113.61",
+      "device_id": "dev_5d0c48",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-09-01T12:39:15Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10520",
+      "carrier": "USPS",
+      "tracking_number": "9400111899223822013377",
+      "status": "in_transit",
+      "shipped_at": "2026-09-02T20:15:00Z",
+      "delivered_at": null,
+      "delivery_address": {
+        "line1": "19 N Pinckney St",
+        "city": "Madison",
+        "region": "WI",
+        "postal_code": "53703",
+        "country": "US"
+      },
+      "proof": {
+        "type": "none"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_4471",
+      "first_seen": "2026-09-01",
+      "orders": [
+        {
+          "order_id": "ord_10520",
+          "transaction_id": "txn_W3E6U9",
+          "date": "2026-09-01",
+          "amount": "96.80",
+          "currency": "USD",
+          "status": "shipped",
+          "ip": "203.0.113.61",
+          "device_id": "dev_5d0c48",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": [
+        {
+          "date": "2026-09-24",
+          "channel": "chat",
+          "summary": "Customer reported no delivery. Agent opened a carrier trace; no answer from carrier yet."
+        }
+      ]
+    }
+  }
+}

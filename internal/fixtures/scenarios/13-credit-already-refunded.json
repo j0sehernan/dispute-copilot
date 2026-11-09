@@ -1,0 +1,163 @@
+{
+  "id": "13-credit-already-refunded",
+  "description": "Visa credit-not-processed claim; a full refund was completed before the dispute was opened.",
+  "input": {
+    "kind": "json",
+    "payload": {
+      "case_id": "VDR-26-0005342",
+      "network": "visa",
+      "reason_code": "13.6",
+      "amount": {
+        "value": "142.50",
+        "currency": "USD"
+      },
+      "transaction_id": "txn_T5R1E8",
+      "transaction_date": "2026-08-30",
+      "opened_at": "2026-10-03",
+      "respond_by": "2026-11-02",
+      "cardholder_claim": "I returned the jacket and the merchant promised a refund. Nothing on my statement."
+    }
+  },
+  "expected": {
+    "category": "credit_not_processed",
+    "recommendation": "fight",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_T5R1E8",
+      "order_id": "ord_10497",
+      "customer_id": "cus_2533",
+      "amount": "142.50",
+      "currency": "USD",
+      "created_at": "2026-08-30T08:15:27Z",
+      "card": {
+        "brand": "visa",
+        "last4": "9921",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "T5R1E8"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "05"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "198.51.100.205",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10497",
+      "transaction_id": "txn_T5R1E8",
+      "customer_id": "cus_2533",
+      "created_at": "2026-08-30T08:14:40Z",
+      "customer": {
+        "name": "Owen Fitzgerald",
+        "email": "owen.fitz@example.com"
+      },
+      "items": [
+        {
+          "sku": "JKT-RAIN-L-RED",
+          "description": "Rain jacket, L, red",
+          "qty": 1,
+          "unit_price": "132.50"
+        },
+        {
+          "sku": "SHP-STD",
+          "description": "Standard shipping",
+          "qty": 1,
+          "unit_price": "10.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "707 W Main Ave",
+        "city": "Spokane",
+        "region": "WA",
+        "postal_code": "99201",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "707 W Main Ave",
+        "city": "Spokane",
+        "region": "WA",
+        "postal_code": "99201",
+        "country": "US"
+      },
+      "ip": "198.51.100.205",
+      "device_id": "dev_4c8e17",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-08-30T08:14:40Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10497",
+      "carrier": "USPS",
+      "tracking_number": "9400111899223819043370",
+      "status": "delivered",
+      "shipped_at": "2026-08-31T16:00:00Z",
+      "delivered_at": "2026-09-03T14:48:00Z",
+      "delivery_address": {
+        "line1": "707 W Main Ave",
+        "city": "Spokane",
+        "region": "WA",
+        "postal_code": "99201",
+        "country": "US"
+      },
+      "proof": {
+        "type": "photo",
+        "photo_ref": "pod_9400111899223819043370.jpg"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_2533",
+      "first_seen": "2026-08-30",
+      "orders": [
+        {
+          "order_id": "ord_10497",
+          "transaction_id": "txn_T5R1E8",
+          "date": "2026-08-30",
+          "amount": "142.50",
+          "currency": "USD",
+          "status": "returned",
+          "ip": "198.51.100.205",
+          "device_id": "dev_4c8e17",
+          "disputed": true
+        }
+      ],
+      "refunds": [
+        {
+          "refund_id": "rf_77310",
+          "transaction_id": "txn_T5R1E8",
+          "amount": "142.50",
+          "currency": "USD",
+          "created_at": "2026-09-19",
+          "status": "completed",
+          "arn": "74123456789012345678901"
+        }
+      ],
+      "disputes": [],
+      "returns": [
+        {
+          "order_id": "ord_10497",
+          "rma": "RMA-55188",
+          "requested_at": "2026-09-08",
+          "received_at": "2026-09-17",
+          "condition": "unused, tags on"
+        }
+      ],
+      "support_contacts": []
+    }
+  }
+}

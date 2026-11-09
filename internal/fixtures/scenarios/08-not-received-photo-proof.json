@@ -1,0 +1,138 @@
+{
+  "id": "08-not-received-photo-proof",
+  "description": "Mastercard goods-not-provided claim; delivered to the order address with photo proof.",
+  "input": {
+    "kind": "text",
+    "text": "HARBOR POINT MERCHANT SERVICES - CHARGEBACK ADVICE\n\nMerchant: CERRO VERDE OUTFITTERS          MID: 4410022931\nAdvice date: 07-Oct-2026\n\nChargeback reference   MC-CB-2026-122015\nScheme                 Mastercard\nReason                 4855 Goods or Services Not Provided\nAmount                 USD 75.40\nAcquirer ref / txn     txn_N8P2K5\nTransaction date       15-Sep-2026\n\nCardholder comment: package never came\n\nDocumentation deadline: 06-Nov-2026\n"
+  },
+  "expected": {
+    "category": "not_received",
+    "recommendation": "fight",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_N8P2K5",
+      "order_id": "ord_10702",
+      "customer_id": "cus_5108",
+      "amount": "75.40",
+      "currency": "USD",
+      "created_at": "2026-09-15T19:26:02Z",
+      "card": {
+        "brand": "mastercard",
+        "last4": "3317",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "N8P2K5"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "02"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "192.0.2.45",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10702",
+      "transaction_id": "txn_N8P2K5",
+      "customer_id": "cus_5108",
+      "created_at": "2026-09-15T19:25:20Z",
+      "customer": {
+        "name": "Lukas Brenner",
+        "email": "lukas.b@example.com"
+      },
+      "items": [
+        {
+          "sku": "HDL-LED-300",
+          "description": "Headlamp 300 lumen",
+          "qty": 1,
+          "unit_price": "44.90"
+        },
+        {
+          "sku": "BAT-AAA-8",
+          "description": "AAA batteries, pack of 8",
+          "qty": 1,
+          "unit_price": "12.50"
+        },
+        {
+          "sku": "SHP-STD",
+          "description": "Standard shipping",
+          "qty": 1,
+          "unit_price": "18.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "1111 Howard St Apt 6",
+        "city": "Omaha",
+        "region": "NE",
+        "postal_code": "68102",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "1111 Howard St Apt 6",
+        "city": "Omaha",
+        "region": "NE",
+        "postal_code": "68102",
+        "country": "US"
+      },
+      "ip": "192.0.2.45",
+      "device_id": "dev_91e0ab",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-09-15T19:25:20Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10702",
+      "carrier": "USPS",
+      "tracking_number": "9400111899223830098412",
+      "status": "delivered",
+      "shipped_at": "2026-09-16T16:45:00Z",
+      "delivered_at": "2026-09-19T11:31:00Z",
+      "delivery_address": {
+        "line1": "1111 Howard St Apt 6",
+        "city": "Omaha",
+        "region": "NE",
+        "postal_code": "68102",
+        "country": "US"
+      },
+      "proof": {
+        "type": "photo",
+        "photo_ref": "pod_9400111899223830098412.jpg"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_5108",
+      "first_seen": "2026-09-15",
+      "orders": [
+        {
+          "order_id": "ord_10702",
+          "transaction_id": "txn_N8P2K5",
+          "date": "2026-09-15",
+          "amount": "75.40",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "192.0.2.45",
+          "device_id": "dev_91e0ab",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": []
+    }
+  }
+}

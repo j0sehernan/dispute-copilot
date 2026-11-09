@@ -1,0 +1,64 @@
+{
+  "id": "15-fraud-order-record-missing",
+  "description": "Visa fraud claim where the order record cannot be found; the agent must report missing evidence instead of guessing.",
+  "input": {
+    "kind": "json",
+    "payload": {
+      "case_id": "VDR-26-0005409",
+      "network": "visa",
+      "reason_code": "10.4",
+      "amount": {
+        "value": "57.25",
+        "currency": "USD"
+      },
+      "transaction_id": "txn_X0Q6P3",
+      "transaction_date": "2026-09-18",
+      "opened_at": "2026-10-08",
+      "respond_by": "2026-11-07",
+      "cardholder_claim": "Unauthorized transaction. Cardholder does not recognize the merchant."
+    }
+  },
+  "expected": {
+    "category": "fraud",
+    "recommendation": "accept",
+    "evidence": [
+      "transaction",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_X0Q6P3",
+      "order_id": "ord_10744",
+      "customer_id": "cus_7019",
+      "amount": "57.25",
+      "currency": "USD",
+      "created_at": "2026-09-18T06:30:12Z",
+      "card": {
+        "brand": "visa",
+        "last4": "5079",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "X0Q6P3"
+      },
+      "three_ds": {
+        "status": "not_attempted"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "198.51.100.66",
+      "captured": true
+    },
+    "customer_history": {
+      "customer_id": "cus_7019",
+      "first_seen": "2026-09-18",
+      "orders": [],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": []
+    }
+  }
+}

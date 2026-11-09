@@ -1,0 +1,143 @@
+{
+  "id": "12-duplicate-same-order-charged-twice",
+  "description": "Mastercard point-of-interaction error; the same order was captured twice and the second capture was never refunded.",
+  "input": {
+    "kind": "text",
+    "text": "HARBOR POINT MERCHANT SERVICES\nChargeback Notification\n\nMerchant: Cerro Verde Outfitters (4410022931)\nNotification date: 03 Oct 2026\n\nCase no.: MC-CB-2026-121702\nNetwork: Mastercard\nReason code: 4834 Point-of-Interaction Error (duplicate processing)\nDisputed amount: USD 134.00\nTransaction ID: txn_U2J9G4 (06 Sep 2026)\n\nCardholder statement: Charged two times for one order, same amount, minutes apart.\n\nResponse due: 02 Nov 2026\n"
+  },
+  "expected": {
+    "category": "duplicate",
+    "recommendation": "accept",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_U2J9G4",
+      "order_id": "ord_10599",
+      "customer_id": "cus_4890",
+      "amount": "134.00",
+      "currency": "USD",
+      "created_at": "2026-09-06T13:05:41Z",
+      "card": {
+        "brand": "mastercard",
+        "last4": "7154",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "U2J9G4"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "02"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "203.0.113.118",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10599",
+      "transaction_id": "txn_U2J9G4",
+      "customer_id": "cus_4890",
+      "created_at": "2026-09-06T13:03:02Z",
+      "customer": {
+        "name": "Rosa Delgado",
+        "email": "rosa.d@example.com"
+      },
+      "items": [
+        {
+          "sku": "STV-CMP-TI",
+          "description": "Titanium camp stove",
+          "qty": 1,
+          "unit_price": "119.00"
+        },
+        {
+          "sku": "SHP-STD",
+          "description": "Standard shipping",
+          "qty": 1,
+          "unit_price": "15.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "140 E Third St",
+        "city": "Dayton",
+        "region": "OH",
+        "postal_code": "45402",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "140 E Third St",
+        "city": "Dayton",
+        "region": "OH",
+        "postal_code": "45402",
+        "country": "US"
+      },
+      "ip": "203.0.113.118",
+      "device_id": "dev_d71c3a",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-09-06T13:03:02Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10599",
+      "carrier": "UPS",
+      "tracking_number": "1Z84X0E70394511452",
+      "status": "delivered",
+      "shipped_at": "2026-09-07T15:00:00Z",
+      "delivered_at": "2026-09-10T11:05:00Z",
+      "delivery_address": {
+        "line1": "140 E Third St",
+        "city": "Dayton",
+        "region": "OH",
+        "postal_code": "45402",
+        "country": "US"
+      },
+      "proof": {
+        "type": "signature",
+        "signed_by": "R DELGADO"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_4890",
+      "first_seen": "2026-09-06",
+      "orders": [
+        {
+          "order_id": "ord_10599",
+          "transaction_id": "txn_U2J9F1",
+          "date": "2026-09-06",
+          "amount": "134.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "203.0.113.118",
+          "device_id": "dev_d71c3a",
+          "disputed": false
+        },
+        {
+          "order_id": "ord_10599",
+          "transaction_id": "txn_U2J9G4",
+          "date": "2026-09-06",
+          "amount": "134.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "203.0.113.118",
+          "device_id": "dev_d71c3a",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": []
+    }
+  }
+}

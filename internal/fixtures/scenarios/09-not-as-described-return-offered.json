@@ -1,0 +1,150 @@
+{
+  "id": "09-not-as-described-return-offered",
+  "description": "Visa not-as-described claim; the customer accepted the return policy, was offered a prepaid return label and never sent the item back.",
+  "input": {
+    "kind": "json",
+    "payload": {
+      "case_id": "VDR-26-0005031",
+      "network": "visa",
+      "reason_code": "13.3",
+      "amount": {
+        "value": "329.00",
+        "currency": "USD"
+      },
+      "transaction_id": "txn_F4H8L2",
+      "transaction_date": "2026-08-20",
+      "opened_at": "2026-09-24",
+      "respond_by": "2026-10-24",
+      "cardholder_claim": "The backpack is a different color and smaller than shown on the website."
+    }
+  },
+  "expected": {
+    "category": "not_as_described",
+    "recommendation": "fight",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_F4H8L2",
+      "order_id": "ord_10455",
+      "customer_id": "cus_2764",
+      "amount": "329.00",
+      "currency": "USD",
+      "created_at": "2026-08-20T14:02:19Z",
+      "card": {
+        "brand": "visa",
+        "last4": "1150",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "F4H8L2"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "05"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "203.0.113.90",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10455",
+      "transaction_id": "txn_F4H8L2",
+      "customer_id": "cus_2764",
+      "created_at": "2026-08-20T14:01:33Z",
+      "customer": {
+        "name": "Noor Haddad",
+        "email": "noor.h@example.com"
+      },
+      "items": [
+        {
+          "sku": "PCK-65L-BLU",
+          "description": "Trekking backpack 65L, blue",
+          "qty": 1,
+          "unit_price": "329.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "2045 Tulare St",
+        "city": "Fresno",
+        "region": "CA",
+        "postal_code": "93721",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "2045 Tulare St",
+        "city": "Fresno",
+        "region": "CA",
+        "postal_code": "93721",
+        "country": "US"
+      },
+      "ip": "203.0.113.90",
+      "device_id": "dev_7aa3c5",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-08-20T14:01:33Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10455",
+      "carrier": "UPS",
+      "tracking_number": "1Z84X0E70394502231",
+      "status": "delivered",
+      "shipped_at": "2026-08-21T15:00:00Z",
+      "delivered_at": "2026-08-25T10:44:00Z",
+      "delivery_address": {
+        "line1": "2045 Tulare St",
+        "city": "Fresno",
+        "region": "CA",
+        "postal_code": "93721",
+        "country": "US"
+      },
+      "proof": {
+        "type": "signature",
+        "signed_by": "N HADDAD"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_2764",
+      "first_seen": "2026-08-20",
+      "orders": [
+        {
+          "order_id": "ord_10455",
+          "transaction_id": "txn_F4H8L2",
+          "date": "2026-08-20",
+          "amount": "329.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "203.0.113.90",
+          "device_id": "dev_7aa3c5",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": [
+        {
+          "date": "2026-08-27",
+          "channel": "email",
+          "summary": "Customer said the backpack looked smaller than expected. Agent explained the 65L size and sent a prepaid return label valid 30 days."
+        },
+        {
+          "date": "2026-09-12",
+          "channel": "email",
+          "summary": "Reminder sent: return label still unused."
+        }
+      ]
+    }
+  }
+}

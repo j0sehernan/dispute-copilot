@@ -1,0 +1,169 @@
+{
+  "id": "02-fraud-repeat-customer-same-device",
+  "description": "Mastercard no-authorization claim from a customer with three earlier undisputed orders on the same device.",
+  "input": {
+    "kind": "text",
+    "text": "HARBOR POINT MERCHANT SERVICES\nDispute Operations - Chargeback Notification\n\nNotice date: 22 Sep 2026\nMerchant: Cerro Verde Outfitters (MID 4410022931)\n\nCase number: MC-CB-2026-118204\nCard network: Mastercard\nReason code: 4837 - No Cardholder Authorization\nDisputed amount: USD 312.45\nOriginal transaction: txn_Q7M2Z8, processed 03 Sep 2026\nCard: Mastercard ending 5521\n\nThe cardholder states that they did not authorize or participate in this transaction.\n\nPlease submit your response with supporting documents no later than 22 Oct 2026.\nIf we do not receive a response by this date, the chargeback will be accepted on your behalf.\n"
+  },
+  "expected": {
+    "category": "fraud",
+    "recommendation": "fight",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_Q7M2Z8",
+      "order_id": "ord_10577",
+      "customer_id": "cus_1188",
+      "amount": "312.45",
+      "currency": "USD",
+      "created_at": "2026-09-03T02:11:51Z",
+      "card": {
+        "brand": "mastercard",
+        "last4": "5521",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "Q7M2Z8"
+      },
+      "three_ds": {
+        "status": "not_attempted"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "198.51.100.77",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10577",
+      "transaction_id": "txn_Q7M2Z8",
+      "customer_id": "cus_1188",
+      "created_at": "2026-09-03T02:10:58Z",
+      "customer": {
+        "name": "Marcus Oyelaran",
+        "email": "m.oyelaran@example.com"
+      },
+      "items": [
+        {
+          "sku": "JKT-DWN-M-BLK",
+          "description": "Down jacket, men's M, black",
+          "qty": 1,
+          "unit_price": "229.00"
+        },
+        {
+          "sku": "GLV-WS-L",
+          "description": "Windstopper gloves, L",
+          "qty": 1,
+          "unit_price": "48.50"
+        },
+        {
+          "sku": "SHP-STD",
+          "description": "Standard shipping",
+          "qty": 1,
+          "unit_price": "34.95"
+        }
+      ],
+      "billing_address": {
+        "line1": "88 Rainey St Unit 1207",
+        "city": "Austin",
+        "region": "TX",
+        "postal_code": "78701",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "88 Rainey St Unit 1207",
+        "city": "Austin",
+        "region": "TX",
+        "postal_code": "78701",
+        "country": "US"
+      },
+      "ip": "198.51.100.77",
+      "device_id": "dev_a41f22",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-09-03T02:10:58Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10577",
+      "carrier": "FedEx",
+      "tracking_number": "772019384410",
+      "status": "delivered",
+      "shipped_at": "2026-09-03T21:30:00Z",
+      "delivered_at": "2026-09-06T14:12:00Z",
+      "delivery_address": {
+        "line1": "88 Rainey St Unit 1207",
+        "city": "Austin",
+        "region": "TX",
+        "postal_code": "78701",
+        "country": "US"
+      },
+      "proof": {
+        "type": "photo",
+        "photo_ref": "pod_772019384410.jpg"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_1188",
+      "first_seen": "2025-11-02",
+      "orders": [
+        {
+          "order_id": "ord_08812",
+          "transaction_id": "txn_K1V9R3",
+          "date": "2025-11-02",
+          "amount": "89.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "198.51.100.77",
+          "device_id": "dev_a41f22",
+          "disputed": false
+        },
+        {
+          "order_id": "ord_09460",
+          "transaction_id": "txn_P0D4L6",
+          "date": "2026-02-19",
+          "amount": "154.20",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "198.51.100.77",
+          "device_id": "dev_a41f22",
+          "disputed": false
+        },
+        {
+          "order_id": "ord_10102",
+          "transaction_id": "txn_H6W2N8",
+          "date": "2026-06-07",
+          "amount": "61.75",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "198.51.100.80",
+          "device_id": "dev_a41f22",
+          "disputed": false
+        },
+        {
+          "order_id": "ord_10577",
+          "transaction_id": "txn_Q7M2Z8",
+          "date": "2026-09-03",
+          "amount": "312.45",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "198.51.100.77",
+          "device_id": "dev_a41f22",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": []
+    }
+  }
+}

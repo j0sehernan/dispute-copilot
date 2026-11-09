@@ -1,0 +1,173 @@
+{
+  "id": "11-duplicate-two-separate-orders",
+  "description": "Visa duplicate-processing claim; the two charges belong to two different orders that were both shipped.",
+  "input": {
+    "kind": "json",
+    "payload": {
+      "case_id": "VDR-26-0005177",
+      "network": "visa",
+      "reason_code": "12.6.1",
+      "amount": {
+        "value": "59.90",
+        "currency": "USD"
+      },
+      "transaction_id": "txn_L7K3D0",
+      "transaction_date": "2026-09-12",
+      "opened_at": "2026-09-30",
+      "respond_by": "2026-10-30",
+      "cardholder_claim": "I was charged twice for the same thing on the same day."
+    }
+  },
+  "expected": {
+    "category": "duplicate",
+    "recommendation": "fight",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_L7K3D0",
+      "order_id": "ord_10690",
+      "customer_id": "cus_4015",
+      "amount": "59.90",
+      "currency": "USD",
+      "created_at": "2026-09-12T18:44:10Z",
+      "card": {
+        "brand": "visa",
+        "last4": "2873",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "L7K3D0"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "05"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "192.0.2.87",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10690",
+      "transaction_id": "txn_L7K3D0",
+      "customer_id": "cus_4015",
+      "created_at": "2026-09-12T18:43:36Z",
+      "customer": {
+        "name": "Hiro Tanabe",
+        "email": "hiro.t@example.com"
+      },
+      "items": [
+        {
+          "sku": "SCK-MER-L",
+          "description": "Merino hiking socks, L, 3-pack",
+          "qty": 1,
+          "unit_price": "49.90"
+        },
+        {
+          "sku": "SHP-STD",
+          "description": "Standard shipping",
+          "qty": 1,
+          "unit_price": "10.00"
+        }
+      ],
+      "billing_address": {
+        "line1": "98 N University Ave",
+        "city": "Provo",
+        "region": "UT",
+        "postal_code": "84601",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "98 N University Ave",
+        "city": "Provo",
+        "region": "UT",
+        "postal_code": "84601",
+        "country": "US"
+      },
+      "ip": "192.0.2.87",
+      "device_id": "dev_6be402",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-09-12T18:43:36Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10690",
+      "carrier": "USPS",
+      "tracking_number": "9400111899223825570016",
+      "status": "delivered",
+      "shipped_at": "2026-09-13T17:00:00Z",
+      "delivered_at": "2026-09-16T12:10:00Z",
+      "delivery_address": {
+        "line1": "98 N University Ave",
+        "city": "Provo",
+        "region": "UT",
+        "postal_code": "84601",
+        "country": "US"
+      },
+      "proof": {
+        "type": "photo",
+        "photo_ref": "pod_9400111899223825570016.jpg"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_4015",
+      "first_seen": "2026-03-04",
+      "orders": [
+        {
+          "order_id": "ord_09544",
+          "transaction_id": "txn_S0F7M6",
+          "date": "2026-03-04",
+          "amount": "112.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "192.0.2.87",
+          "device_id": "dev_6be402",
+          "disputed": false
+        },
+        {
+          "order_id": "ord_10688",
+          "transaction_id": "txn_L7K2B9",
+          "date": "2026-09-12",
+          "amount": "59.90",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "192.0.2.87",
+          "device_id": "dev_6be402",
+          "disputed": false
+        },
+        {
+          "order_id": "ord_10690",
+          "transaction_id": "txn_L7K3D0",
+          "date": "2026-09-12",
+          "amount": "59.90",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "192.0.2.87",
+          "device_id": "dev_6be402",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": [
+        {
+          "date": "2026-09-12",
+          "channel": "email",
+          "summary": "Two order confirmations sent: ord_10688 (socks, size M, ship to Provo) and ord_10690 (socks, size L, ship to Provo)."
+        }
+      ]
+    }
+  }
+}

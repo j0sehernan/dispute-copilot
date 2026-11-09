@@ -1,0 +1,134 @@
+{
+  "id": "14-credit-not-processed-no-refund",
+  "description": "Mastercard credit-not-processed claim; the return was received two weeks ago and no refund exists.",
+  "input": {
+    "kind": "text",
+    "text": "Harbor Point Merchant Services - Dispute notice\nDate: 2026-10-06\n\nMerchant: Cerro Verde Outfitters (MID 4410022931)\n\nCase reference: MC-CB-2026-121958\nCard brand: Mastercard\nReason code: 4860 Credit Not Processed\nAmount: 89.99 USD\nOriginal transaction: txn_V8B4N6 (2026-09-04)\n\nCardholder: Returned the trekking poles on Sept 15 with the return label from the store. No refund received.\n\nPlease respond by 2026-11-05.\n"
+  },
+  "expected": {
+    "category": "credit_not_processed",
+    "recommendation": "accept",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_V8B4N6",
+      "order_id": "ord_10560",
+      "customer_id": "cus_3712",
+      "amount": "89.99",
+      "currency": "USD",
+      "created_at": "2026-09-04T20:20:20Z",
+      "card": {
+        "brand": "mastercard",
+        "last4": "6648",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "V8B4N6"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "02"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "192.0.2.150",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10560",
+      "transaction_id": "txn_V8B4N6",
+      "customer_id": "cus_3712",
+      "created_at": "2026-09-04T20:19:31Z",
+      "customer": {
+        "name": "Imani Clarke",
+        "email": "imani.c@example.com"
+      },
+      "items": [
+        {
+          "sku": "PLS-TRK-CF",
+          "description": "Carbon trekking poles, pair",
+          "qty": 1,
+          "unit_price": "89.99"
+        }
+      ],
+      "billing_address": {
+        "line1": "12 E Superior St",
+        "city": "Duluth",
+        "region": "MN",
+        "postal_code": "55802",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "12 E Superior St",
+        "city": "Duluth",
+        "region": "MN",
+        "postal_code": "55802",
+        "country": "US"
+      },
+      "ip": "192.0.2.150",
+      "device_id": "dev_83f5d0",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-09-04T20:19:31Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10560",
+      "carrier": "USPS",
+      "tracking_number": "9400111899223821176604",
+      "status": "delivered",
+      "shipped_at": "2026-09-05T15:30:00Z",
+      "delivered_at": "2026-09-09T10:02:00Z",
+      "delivery_address": {
+        "line1": "12 E Superior St",
+        "city": "Duluth",
+        "region": "MN",
+        "postal_code": "55802",
+        "country": "US"
+      },
+      "proof": {
+        "type": "photo",
+        "photo_ref": "pod_9400111899223821176604.jpg"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_3712",
+      "first_seen": "2026-09-04",
+      "orders": [
+        {
+          "order_id": "ord_10560",
+          "transaction_id": "txn_V8B4N6",
+          "date": "2026-09-04",
+          "amount": "89.99",
+          "currency": "USD",
+          "status": "returned",
+          "ip": "192.0.2.150",
+          "device_id": "dev_83f5d0",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [
+        {
+          "order_id": "ord_10560",
+          "rma": "RMA-55240",
+          "requested_at": "2026-09-12",
+          "received_at": "2026-09-19",
+          "condition": "unused"
+        }
+      ],
+      "support_contacts": []
+    }
+  }
+}

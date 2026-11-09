@@ -1,0 +1,155 @@
+{
+  "id": "05-not-received-signed-delivery",
+  "description": "Visa item-not-received claim where the carrier shows a signed delivery at the order address.",
+  "input": {
+    "kind": "text",
+    "text": "CHARGEBACK NOTIFICATION - ACTION REQUIRED\nFrom: Harbor Point Merchant Services, Dispute Operations\nTo: Cerro Verde Outfitters (MID 4410022931)\nSent: 18 September 2026\n\nCase ID ........ VDR-26-0004990\nNetwork ........ Visa\nReason code .... 13.1 Merchandise/Services Not Received\nAmount ......... $184.30 USD\nTransaction .... txn_M5B7J2 on 29 August 2026\n\nCardholder statement: I ordered a sleeping bag and a pad and never got the package. The store did not answer my emails.\n\nRespond by 18 October 2026.\n"
+  },
+  "expected": {
+    "category": "not_received",
+    "recommendation": "fight",
+    "evidence": [
+      "transaction",
+      "order",
+      "shipping",
+      "customer_history"
+    ]
+  },
+  "data": {
+    "transaction": {
+      "id": "txn_M5B7J2",
+      "order_id": "ord_10489",
+      "customer_id": "cus_2290",
+      "amount": "184.30",
+      "currency": "USD",
+      "created_at": "2026-08-29T17:03:27Z",
+      "card": {
+        "brand": "visa",
+        "last4": "7781",
+        "country": "US"
+      },
+      "authorization": {
+        "result": "approved",
+        "code": "M5B7J2"
+      },
+      "three_ds": {
+        "status": "authenticated",
+        "version": "2.2.0",
+        "eci": "05"
+      },
+      "avs_result": "Y",
+      "cvv_result": "M",
+      "ip": "198.51.100.12",
+      "captured": true
+    },
+    "order": {
+      "id": "ord_10489",
+      "transaction_id": "txn_M5B7J2",
+      "customer_id": "cus_2290",
+      "created_at": "2026-08-29T17:02:44Z",
+      "customer": {
+        "name": "Priya Natarajan",
+        "email": "priya.n@example.com"
+      },
+      "items": [
+        {
+          "sku": "SLB-20F-REG",
+          "description": "Sleeping bag 20F, regular",
+          "qty": 1,
+          "unit_price": "139.00"
+        },
+        {
+          "sku": "PAD-FOAM-R",
+          "description": "Closed-cell foam pad",
+          "qty": 1,
+          "unit_price": "35.00"
+        },
+        {
+          "sku": "SHP-STD",
+          "description": "Standard shipping",
+          "qty": 1,
+          "unit_price": "10.30"
+        }
+      ],
+      "billing_address": {
+        "line1": "410 W Bannock St",
+        "city": "Boise",
+        "region": "ID",
+        "postal_code": "83702",
+        "country": "US"
+      },
+      "shipping_address": {
+        "line1": "410 W Bannock St",
+        "city": "Boise",
+        "region": "ID",
+        "postal_code": "83702",
+        "country": "US"
+      },
+      "ip": "198.51.100.12",
+      "device_id": "dev_33aa10",
+      "channel": "web",
+      "fulfillment": "physical",
+      "terms_accepted": {
+        "return_policy": true,
+        "accepted_at": "2026-08-29T17:02:44Z"
+      }
+    },
+    "shipping": {
+      "order_id": "ord_10489",
+      "carrier": "UPS",
+      "tracking_number": "1Z84X0E70394519920",
+      "status": "delivered",
+      "shipped_at": "2026-08-31T15:10:00Z",
+      "delivered_at": "2026-09-03T12:55:00Z",
+      "delivery_address": {
+        "line1": "410 W Bannock St",
+        "city": "Boise",
+        "region": "ID",
+        "postal_code": "83702",
+        "country": "US"
+      },
+      "proof": {
+        "type": "signature",
+        "signed_by": "P NATARAJAN"
+      }
+    },
+    "customer_history": {
+      "customer_id": "cus_2290",
+      "first_seen": "2026-01-10",
+      "orders": [
+        {
+          "order_id": "ord_09201",
+          "transaction_id": "txn_B8C1F0",
+          "date": "2026-01-10",
+          "amount": "64.00",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "198.51.100.12",
+          "device_id": "dev_33aa10",
+          "disputed": false
+        },
+        {
+          "order_id": "ord_10489",
+          "transaction_id": "txn_M5B7J2",
+          "date": "2026-08-29",
+          "amount": "184.30",
+          "currency": "USD",
+          "status": "delivered",
+          "ip": "198.51.100.12",
+          "device_id": "dev_33aa10",
+          "disputed": true
+        }
+      ],
+      "refunds": [],
+      "disputes": [],
+      "returns": [],
+      "support_contacts": [
+        {
+          "date": "2026-09-10",
+          "channel": "email",
+          "summary": "Customer asked where the order was. Agent replied the same day with tracking and signed delivery details."
+        }
+      ]
+    }
+  }
+}
