@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dispute Copilot</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/htmx.min.js" defer></script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/disputes">Dispute Copilot</a>
+    <nav>
+      <a href="/disputes">Disputes</a>
+      <a class="button small" href="/disputes/new">New dispute</a>
+    </nav>
+  </header>
+  <main>
+    {{template "content" .}}
+  </main>
+  <footer>Demo project. All merchants, customers, cards and cases are synthetic.</footer>
+</body>
+</html>

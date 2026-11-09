@@ -1,0 +1,30 @@
+{{define "badge"}}<span class="badge status-{{.}}">{{statusLabel .}}</span>{{end}}
+
+{{define "decision"}}{{if eq . "fight"}}<span class="pill fight">Fight</span>{{else if eq . "accept"}}<span class="pill accept">Accept</span>{{else}}<span class="muted">-</span>{{end}}{{end}}
+
+{{define "table"}}
+<div id="disputes" {{if .Processing}}hx-get="/disputes/table" hx-trigger="every 3s" hx-swap="outerHTML"{{end}}>
+  {{if .Rows}}
+  <table class="list">
+    <thead>
+      <tr><th>Case</th><th>Network</th><th>Reason</th><th>Amount</th><th>Status</th><th>Agent</th><th>Received</th></tr>
+    </thead>
+    <tbody>
+      {{range .Rows}}
+      <tr>
+        <td><a href="/disputes/{{.ID}}">{{if .CaseID}}{{.CaseID}}{{else}}<span class="muted">pending extraction</span>{{end}}</a></td>
+        <td>{{network .Network}}</td>
+        <td>{{.ReasonCode}}{{if .Category}} <span class="muted">{{title .Category}}</span>{{end}}</td>
+        <td class="num">{{.Amount}}</td>
+        <td>{{template "badge" .Status}}</td>
+        <td>{{template "decision" .Recommendation}}</td>
+        <td class="muted">{{ago .CreatedAt}}</td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+  {{else}}
+  <p class="empty">No disputes yet. <a href="/disputes/new">Upload a notice</a> or run <code>make seed</code>.</p>
+  {{end}}
+</div>
+{{end}}

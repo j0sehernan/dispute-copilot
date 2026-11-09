@@ -1,0 +1,15 @@
+{{define "content"}}
+<h1>New dispute</h1>
+<p class="lead">Upload the chargeback notice from your acquirer (PDF, text or the JSON payload), or paste its text. The agent runs in the background; you can leave the page.</p>
+{{if .Error}}<div class="alert">{{.Error}}</div>{{end}}
+<form class="card" method="post" action="/disputes" enctype="multipart/form-data">
+  <label>File
+    <input type="file" name="file" accept=".pdf,.txt,.json,application/pdf,text/plain,application/json">
+  </label>
+  <p class="or">or</p>
+  <label>Notice text
+    <textarea name="notice" rows="14" placeholder="Case number: ...&#10;Reason code: ...">{{.Text}}</textarea>
+  </label>
+  <button type="submit">Analyze</button>
+</form>
+{{end}}

@@ -1,0 +1,139 @@
+{{define "progress"}}
+<div id="progress" {{if .Processing}}hx-get="/disputes/{{.D.ID}}/progress" hx-trigger="every 2s" hx-swap="outerHTML"{{end}}>
+  <ol class="steps">
+    {{range .Steps}}<li class="{{.State}}">{{.Label}}</li>{{end}}
+  </ol>
+  {{if .Processing}}<p class="muted working">The agent is working on this dispute. This page updates by itself.</p>{{end}}
+</div>
+{{end}}
+
+{{define "content"}}
+<div class="head">
+  <div>
+    <a class="muted" href="/disputes">&larr; All disputes</a>
+    <h1>{{with .D.Details}}{{.CaseID}}{{else}}New dispute{{end}} {{template "badge" .D.Status}}</h1>
+  </div>
+  {{if .D.Analysis}}
+  <div class="actions">
+    <a class="button secondary" href="/disputes/{{.D.ID}}/package.md">Download .md</a>
+    <a class="button secondary" href="/disputes/{{.D.ID}}/package.pdf">Download .pdf</a>
+  </div>
+  {{end}}
+</div>
+
+{{template "progress" .}}
+
+{{if .D.FailureReason}}<div class="alert">The agent could not finish: {{.D.FailureReason}}</div>{{end}}
+
+{{if .Fields}}
+<dl class="fields">
+  {{range .Fields}}<div><dt>{{index . 0}}</dt><dd>{{index . 1}}</dd></div>{{end}}
+</dl>
+{{with .D.Details}}{{if .CardholderClaim}}<blockquote class="claim">“{{.CardholderClaim}}”</blockquote>{{end}}{{end}}
+{{end}}
+
+{{with .D.Analysis}}
+<div class="grid">
+  <section>
+    <h2>Recommendation</h2>
+    <div class="card recommendation {{.Recommendation}}">
+      <p class="big">{{template "decision" (print .Recommendation)}} <span class="muted">rule <code>{{.RuleID}}</code>{{if eq .RuleMatch "similarity"}} (matched by similarity){{end}}</span></p>
+      {{if .PolicyOverride}}
+      <p class="note">The model answered “{{.ModelRecommendation}}”, but its own requirement check matches the rule's conditions for “{{.Recommendation}}”. The rule wins; please double-check.</p>
+      {{end}}
+      <ol class="reasons">
+        {{range $.Reasons}}
+        <li>{{.Text}}
+          {{if or .Cites .Rules}}<ul class="cites">{{range .Cites}}<li><code>{{.}}</code></li>{{end}}{{range .Rules}}<li>rule <code>{{.}}</code></li>{{end}}</ul>{{end}}
+        </li>
+        {{end}}
+      </ol>
+    </div>
+
+    <h2>Requirements</h2>
+    <table class="reqs">
+      {{range $.Requirements}}
+      <tr>
+        <td><span class="req {{.Class}}">{{.Status}}</span></td>
+        <td>
+          <strong>{{.Text}}</strong>
+          <p>{{.Explanation}}</p>
+          {{if .Cites}}<ul class="cites">{{range .Cites}}<li><code>{{.}}</code></li>{{end}}</ul>{{end}}
+        </td>
+      </tr>
+      {{end}}
+    </table>
+
+    {{if $.Missing}}
+    <h2>Missing evidence</h2>
+    <ul class="missing">{{range $.Missing}}<li>{{.}}</li>{{end}}</ul>
+    {{end}}
+  </section>
+
+  <section>
+    <h2>Review</h2>
+    {{if $.CanReview}}
+    {{if $.Error}}<div class="alert">{{$.Error}}</div>{{end}}
+    {{if $.Saved}}<div class="ok">Draft saved.</div>{{end}}
+    <form class="card review" method="post" action="/disputes/{{$.D.ID}}/review">
+      <div class="row">
+        <label>Your name<input name="reviewer" value="{{$.Form.Reviewer}}" maxlength="100" required></label>
+        <label>Decision
+          <select name="decision">
+            <option value="fight" {{if eq $.Form.Decision "fight"}}selected{{end}}>Fight</option>
+            <option value="accept" {{if eq $.Form.Decision "accept"}}selected{{end}}>Accept</option>
+          </select>
+        </label>
+      </div>
+      <label>Letter subject<input name="subject" value="{{$.Form.Subject}}"></label>
+      <label>Response letter<textarea name="body" rows="22" placeholder="No letter is drafted when the recommendation is accept. Write one here if you decide to fight.">{{$.Form.Body}}</textarea></label>
+      <div class="row end">
+        <button type="submit" name="action" value="save" class="secondary">Save draft</button>
+        <button type="submit" name="action" value="approve">Approve</button>
+      </div>
+      <p class="muted small">Approving does not send anything. Download the package and submit it through your acquirer.</p>
+    </form>
+    {{else if eq (print $.D.Status) "approved"}}
+    <div class="card">
+      <p><strong>{{if eq (print $.D.Decision) "fight"}}Fight{{else}}Accept{{end}}</strong>, approved by {{$.D.ReviewedBy}} on {{date $.D.ApprovedAt}}{{if $.D.Letter.Edited}} (letter edited by the reviewer){{end}}.</p>
+      {{if $.D.Letter.Body}}
+      <p class="muted">{{$.D.Letter.Subject}}</p>
+      <pre class="letter">{{$.D.Letter.Body}}</pre>
+      {{end}}
+    </div>
+    {{end}}
+  </section>
+</div>
+{{end}}
+
+{{if .Evidence}}
+<h2>Evidence</h2>
+<div class="evidence">
+  {{range .Evidence}}
+  <details class="card ev-{{.State}}">
+    <summary><strong>{{.Source}}</strong>
+      {{if eq .State "found"}}<code>{{.Ref}}</code>{{else if eq .State "not_found"}}<span class="req missing_evidence">not found</span> <code>{{.Ref}}</code>{{else}}<span class="muted">not requested</span>{{end}}
+    </summary>
+    {{if .JSON}}<pre>{{.JSON}}</pre>{{end}}
+  </details>
+  {{end}}
+</div>
+{{end}}
+
+{{if .Audit}}
+<details class="audit">
+  <summary><h2>Audit trail</h2> <span class="muted">{{.Usage.LLMCalls}} model calls, {{.Usage.ToolCalls}} tool calls, {{.Usage.InputTokens}} / {{.Usage.OutputTokens}} tokens, about {{.Cost}}</span></summary>
+  <table class="list compact">
+    <thead><tr><th>Time</th><th>Step</th><th>Event</th><th>Name</th><th>Model</th><th>Prompt</th><th>Tokens in/out</th><th>Latency</th><th>Detail</th></tr></thead>
+    <tbody>
+      {{range .Audit}}
+      <tr class="{{if not .OK}}bad{{end}}">
+        <td>{{.At}}</td><td>{{.Step}}</td><td>{{.Kind}}</td><td>{{.Name}}</td><td>{{.Model}}</td><td>{{.Prompt}}</td>
+        <td class="num">{{.Tokens}}</td><td class="num">{{.Latency}}</td><td class="muted">{{.Note}}</td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+</details>
+{{end}}
+{{end}}
